@@ -25,12 +25,15 @@ export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.2')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.2')
-export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','1c34284e')
+export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','c8b67bb5')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','4.10.0-SNAPSHOT')
 export JENA_RELEASE_4_8_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_8_PARENT_TAG','17')
 export JENA_RELEASE_4_8_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_8_GIT_COMMIT_ID','jena-4.8.0')
 export JENA_RELEASE_4_8_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_8_DISTRO_VERSION','4.8.0')
-export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','b00210bd')
+export JENA_RELEASE_4_9_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_9_PARENT_TAG','17')
+export JENA_RELEASE_4_9_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_9_GIT_COMMIT_ID','jena-4.9.0')
+export JENA_RELEASE_4_9_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_9_DISTRO_VERSION','4.9.0')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','7bfbeb62')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.5.0-SNAPSHOT')
 export SPARK_RELEASE_3_4_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_4_PARENT_TAG','17')
 export SPARK_RELEASE_3_4_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.4.0')
@@ -196,7 +199,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-17 build-jena-main-20 build-jena-release-4_8
+build-jena: build-jena-main-17 build-jena-main-20 build-jena-release-4_8 build-jena-release-4_9
 
 build-jena-main-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
@@ -206,6 +209,9 @@ build-jena-main-20: build-maven-20
 
 build-jena-release-4_8: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_8_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_8_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_8_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_8_DISTRO_VERSION} .
+
+build-jena-release-4_9: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_9_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_9_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_9_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_9_DISTRO_VERSION} .
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
