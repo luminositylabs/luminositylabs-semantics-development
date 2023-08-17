@@ -1,7 +1,7 @@
 #!/usr/bin/env just --justfile
 
 export PREFIX := env_var_or_default('PREFIX','llsem-')
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20230624')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20230804')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.382-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.20-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.8-zulu')
