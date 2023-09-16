@@ -30,11 +30,11 @@ export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION'
 export JENA_RELEASE_4_9_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_9_PARENT_TAG','17')
 export JENA_RELEASE_4_9_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_9_GIT_COMMIT_ID','jena-4.9.0')
 export JENA_RELEASE_4_9_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_9_DISTRO_VERSION','4.9.0')
-export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','090fd18f')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','ab46dc04')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','4.0.0-SNAPSHOT')
-export SPARK_RELEASE_3_4_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_4_PARENT_TAG','17')
-export SPARK_RELEASE_3_4_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.4.1')
-export SPARK_RELEASE_3_4_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.4.1')
+export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
+export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','v3.5.0')
+export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','3.5.0')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','4da92b23')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.20')
 
@@ -215,7 +215,7 @@ list-jena-upstream-main-pom-version:
 
 
 # Spark recipes
-build-spark: build-spark-master-17 build-spark-master-20 build-spark-release-3_4
+build-spark: build-spark-master-17 build-spark-master-20 build-spark-release-3_5
 
 build-spark-master-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
@@ -223,8 +223,8 @@ build-spark-master-17: build-maven-17
 build-spark-master-20: build-maven-20
    time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:20 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=20 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
 
-build-spark-release-3_4: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:${SPARK_RELEASE_3_4_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${SPARK_RELEASE_3_4_PARENT_TAG} --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_4_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_4_DISTRO_VERSION} .
+build-spark-release-3_5: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:${SPARK_RELEASE_3_5_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG} --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_5_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_5_DISTRO_VERSION} .
 
 list-spark-upstream-master-commit-id:
    git ls-remote https://github.com/apache/spark heads/master
