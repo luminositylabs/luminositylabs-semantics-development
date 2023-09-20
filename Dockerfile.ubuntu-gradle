@@ -1,5 +1,5 @@
 ARG PREFIX=llsem-
-ARG PARENT_TAG=17
+ARG PARENT_TAG=21
 FROM ${PREFIX}ubuntu-kotlin:${PARENT_TAG}
 
 # install updates and required packages, and cleanup afterward

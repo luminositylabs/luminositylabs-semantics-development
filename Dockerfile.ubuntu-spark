@@ -1,5 +1,5 @@
 ARG PREFIX=llsem-
-ARG PARENT_TAG=11
+ARG PARENT_TAG=21
 FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
 
 # install updates and required packages, and cleanup afterward
