@@ -25,11 +25,11 @@ export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.3')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.3')
-export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','798bd6fc')
-export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','4.10.0-SNAPSHOT')
-export JENA_RELEASE_4_9_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_9_PARENT_TAG','17')
-export JENA_RELEASE_4_9_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_9_GIT_COMMIT_ID','jena-4.9.0')
-export JENA_RELEASE_4_9_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_9_DISTRO_VERSION','4.9.0')
+export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','d111e3e8')
+export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','5.0.0-SNAPSHOT')
+export JENA_RELEASE_4_10_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_10_PARENT_TAG','17')
+export JENA_RELEASE_4_10_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_10_GIT_COMMIT_ID','jena-4.10.0')
+export JENA_RELEASE_4_10_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_4_10_DISTRO_VERSION','4.10.0')
 export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','f1ae56b1')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','4.0.0-SNAPSHOT')
 export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
@@ -196,7 +196,8 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-17 build-jena-main-21 build-jena-release-4_9
+build-jena: build-jena-main-17 build-jena-main-21
+# temporarily removed "build-jena-release-4_10" dependency since 4.10 release build fails
 
 build-jena-main-17: build-maven-17
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
@@ -204,8 +205,8 @@ build-jena-main-17: build-maven-17
 build-jena-main-21: build-maven-21
    time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
 
-build-jena-release-4_9: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_9_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_9_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_9_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_9_DISTRO_VERSION} .
+build-jena-release-4_10: build-maven-17
+   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
