@@ -1,6 +1,9 @@
 #!/usr/bin/env just --justfile
 
-export PREFIX := env_var_or_default('PREFIX','llsem-')
+prefix := env_var_or_default('PREFIX','llsem-') 
+do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
+do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
+
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20231128')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.392-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.21-zulu')
@@ -38,6 +41,7 @@ export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DIST
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','f69aa067')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.20')
 
+
 default:
   @echo "Invoke just --list to see a list of possible recipes to run"
 
@@ -46,7 +50,13 @@ all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle bui
 
 # Ubuntu recipes
 build-ubuntu:
-   time docker image build --pull -f Dockerfile.ubuntu -t ${PREFIX}ubuntu:latest --build-arg PARENT_TAG=${UBUNTU_TAG} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 --pull -f Dockerfile.ubuntu -t {{prefix}}ubuntu:latest_linux-amd64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+       time docker image build --platform linux/arm64 --pull -f Dockerfile.ubuntu -t {{prefix}}ubuntu:latest_linux-arm64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+   fi
 
 list-dockerhub-ubuntu-tags:
    curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep jammy
@@ -56,121 +66,302 @@ list-dockerhub-ubuntu-tags:
 build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21
 
 build-zulu-8: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:8  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
-  
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+   fi
+
 build-zulu-11: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:11  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11}  .
-  
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
+   fi
+
 build-zulu-17: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:17  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17}  .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
+   fi
 
 build-zulu-21: build-ubuntu
-   time docker image build -f Dockerfile.ubuntu-zulu  -t ${PREFIX}ubuntu-zulu:21  --build-arg PREFIX=${PREFIX} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21}  .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t {{prefix}}ubuntu-zulu:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
+   fi
+
 
 # Kotlin recipes
 build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-21
 
 build-kotlin-8: build-zulu-8
-   time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
 
 build-kotlin-11: build-zulu-11
-   time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
 
 build-kotlin-17: build-zulu-17
-   time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
 
 build-kotlin-21: build-zulu-21
-   time docker image build -f Dockerfile.ubuntu-kotlin -t ${PREFIX}ubuntu-kotlin:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t {{prefix}}ubuntu-kotlin:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+   fi
 
 
 # Scala recipes
 build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21
 
 build-scala-8: build-zulu-8
-   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SCALA_VER=${SCALA_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
 
 build-scala-11: build-zulu-11
-   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SCALA_VER=${SCALA_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
 
 build-scala-17: build-zulu-17
-   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SCALA_VER=${SCALA_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
 
 build-scala-21: build-zulu-21
-   time docker image build -f Dockerfile.ubuntu-scala -t ${PREFIX}ubuntu-scala:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg SCALA_VER=${SCALA_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t {{prefix}}ubuntu-scala:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+   fi
 
 
 # Apache Ant recipes
 build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-21
 
 build-ant-8: build-kotlin-8
-   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg ANT_VER=${ANT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+   fi
 
 build-ant-11: build-kotlin-11
-   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg ANT_VER=${ANT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+   fi
 
 build-ant-17: build-kotlin-17
-   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg ANT_VER=${ANT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+   fi
 
 build-ant-21: build-kotlin-21
-   time docker image build -f Dockerfile.ubuntu-ant -t ${PREFIX}ubuntu-ant:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg ANT_VER=${ANT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t {{prefix}}ubuntu-ant:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+   fi
 
 
 # Gradle recipes
 build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-21
 
 build-gradle-8: build-kotlin-8
-   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg GRADLE_VER=${GRADLE_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
 
 build-gradle-11: build-kotlin-11
-   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg GRADLE_VER=${GRADLE_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
 
 build-gradle-17: build-kotlin-17
-   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg GRADLE_VER=${GRADLE_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
 
 build-gradle-21: build-kotlin-21
-   time docker image build -f Dockerfile.ubuntu-gradle -t ${PREFIX}ubuntu-gradle:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg GRADLE_VER=${GRADLE_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t {{prefix}}ubuntu-gradle:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+   fi
 
 
 # Apache Maven recipes
 build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-21
 
 build-maven-8: build-kotlin-8
-   time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg MAVEN_VER=${MAVEN_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
 
 build-maven-11: build-kotlin-11
-   time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg MAVEN_VER=${MAVEN_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
 
 build-maven-17: build-kotlin-17
-   time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg MAVEN_VER=${MAVEN_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
 
 build-maven-21: build-kotlin-21
-   time docker image build -f Dockerfile.ubuntu-maven -t ${PREFIX}ubuntu-maven:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg MAVEN_VER=${MAVEN_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t {{prefix}}ubuntu-maven:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+   fi
 
 
 # SBT recipes
 build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21
 
 build-sbt-8: build-scala-8
-   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:8 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=8 --build-arg SBT_VER=${SBT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:8_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:8_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+   fi
 
 build-sbt-11: build-scala-11
-   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:11 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=11 --build-arg SBT_VER=${SBT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:11_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:11_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+   fi
 
 build-sbt-17: build-scala-17
-   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SBT_VER=${SBT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+   fi
 
 build-sbt-21: build-scala-21
-   time docker image build -f Dockerfile.ubuntu-sbt -t ${PREFIX}ubuntu-sbt:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg SBT_VER=${SBT_VER} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t {{prefix}}ubuntu-sbt:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+   fi
 
 
 # Blazegraph recipes
 build-blazegraph: build-blazegraph-8 build-blazegraph-release
 
 build-blazegraph-8: build-maven-8
-   time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:latest --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-blazegraph -t {{prefix}}ubuntu-blazegraph:latest_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-blazegraph -t {{prefix}}ubuntu-blazegraph:latest_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} .
+   fi
 
 build-blazegraph-release: build-maven-8
-   time docker image build -f Dockerfile.ubuntu-blazegraph -t ${PREFIX}ubuntu-blazegraph:${BLAZEGRAPH_RELEASE_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_RELEASE_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_RELEASE_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-blazegraph -t {{prefix}}ubuntu-blazegraph:${BLAZEGRAPH_RELEASE_DISTRO_VERSION}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_RELEASE_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_RELEASE_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-blazegraph -t {{prefix}}ubuntu-blazegraph:${BLAZEGRAPH_RELEASE_DISTRO_VERSION}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg BLAZEGRAPH_GIT_COMMIT_ID=${BLAZEGRAPH_RELEASE_GIT_COMMIT_ID} --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_RELEASE_DISTRO_VERSION} .
+   fi
 
 list-blazegraph-upstream-master-commit-id:
    git ls-remote https://github.com/blazegraph/database heads/master
@@ -183,10 +374,22 @@ list-blazegraph-upstream-main-pom-version:
 build-cassandra: build-cassandra-trunk build-cassandra-release-4_1
 
 build-cassandra-trunk: build-ant-17
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:latest --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_TRUNK_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-cassandra -t {{prefix}}ubuntu-cassandra:latest_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG}_linux-amd64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_TRUNK_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-cassandra -t {{prefix}}ubuntu-cassandra:latest_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG}_linux-arm64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_TRUNK_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_TRUNK_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} .
+   fi
 
 build-cassandra-release-4_1: build-ant-11
-   time docker image build -f Dockerfile.ubuntu-cassandra -t ${PREFIX}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-cassandra -t {{prefix}}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG}_linux-amd64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-cassandra -t {{prefix}}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG}_linux-arm64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
+   fi
 
 list-cassandra-upstream-trunk-commit-id:
    git ls-remote https://github.com/apache/cassandra heads/trunk
@@ -200,13 +403,31 @@ build-jena: build-jena-main-17 build-jena-main-21
 # temporarily removed "build-jena-release-4_10" dependency since 4.10 release build fails
 
 build-jena-main-17: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   fi
 
 build-jena-main-21: build-maven-21
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg JENA_GIT_COMMIT_ID=${JENA_MAIN_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_MAIN_DISTRO_VERSION} .
+   fi
 
 build-jena-release-4_10: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-jena -t ${PREFIX}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG} --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-amd64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-arm64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
+   fi
 
 list-jena-upstream-main-commit-id:
    git ls-remote https://github.com/apache/jena heads/main
@@ -219,13 +440,31 @@ list-jena-upstream-main-pom-version:
 build-spark: build-spark-master-17 build-spark-master-21 build-spark-release-3_5
 
 build-spark-master-17: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   fi
 
 build-spark-master-21: build-maven-21
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_MASTER_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_MASTER_DISTRO_VERSION} .
+   fi
 
 build-spark-release-3_5: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-spark -t ${PREFIX}ubuntu-spark:${SPARK_RELEASE_3_5_DISTRO_VERSION} --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG} --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_5_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_5_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:${SPARK_RELEASE_3_5_DISTRO_VERSION}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG}_linux-amd64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_5_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_5_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-spark -t {{prefix}}ubuntu-spark:${SPARK_RELEASE_3_5_DISTRO_VERSION}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG}_linux-arm64 --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_5_GIT_COMMIT_ID} --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_5_DISTRO_VERSION} .
+   fi
 
 list-spark-upstream-master-commit-id:
    git ls-remote https://github.com/apache/spark heads/master
@@ -238,10 +477,22 @@ list-spark-upstream-master-pom-version:
 build-widoco: build-widoco-main-17 build-widoco-main-21
 
 build-widoco-main-17: build-maven-17
-   time docker image build -f Dockerfile.ubuntu-widoco -t ${PREFIX}ubuntu-widoco:17 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=17 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-widoco -t {{prefix}}ubuntu-widoco:17_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-widoco -t {{prefix}}ubuntu-widoco:17_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   fi
 
 build-widoco-main-21: build-maven-21
-   time docker image build -f Dockerfile.ubuntu-widoco -t ${PREFIX}ubuntu-widoco:21 --build-arg PREFIX=${PREFIX} --build-arg PARENT_TAG=21 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   #!/usr/bin/env bash
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-widoco -t {{prefix}}ubuntu-widoco:21_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-widoco -t {{prefix}}ubuntu-widoco:21_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg WIDOCO_GIT_COMMIT_ID=${WIDOCO_MAIN_GIT_COMMIT_ID} --build-arg WIDOCO_DISTRO_VERSION=${WIDOCO_MAIN_DISTRO_VERSION} .
+   fi
 
 list-widoco-upstream-master-commit-id:
    git ls-remote https://github.com/dgarijo/Widoco heads/master
