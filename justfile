@@ -32,7 +32,7 @@ export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.3')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.3')
-export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','cca8c388')
+export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','752e9463')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','5.0.0-SNAPSHOT')
 export JENA_RELEASE_4_10_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_10_PARENT_TAG','17')
 export JENA_RELEASE_4_10_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_4_10_GIT_COMMIT_ID','jena-4.10.0')
@@ -832,8 +832,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-17 build-jena-main-21
-# temporarily removed "build-jena-release-4_10" dependency since 4.10 release build fails
+build-jena: build-jena-main-17 build-jena-main-21 build-jena-release-4_10
 
 build-jena-main-17: build-maven-17
    #!/usr/bin/env bash
@@ -881,11 +880,21 @@ build-jena-main-21: build-maven-21
 
 build-jena-release-4_10: build-maven-17
    #!/usr/bin/env bash
+   if [[ "{{do_platform_amd64}}" == "true" ]]; then MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS} linux-amd64"; fi
+   if [[ "{{do_platform_arm64}}" == "true" ]]; then MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS} linux-arm64"; fi
+   MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
+   IMGTAG={{prefix}}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION}
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-amd64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
+      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-jena -t  ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-amd64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} --build-arg SKIP_JAVADOCS=true .
+      if [[ "{{do_push}}" == "true" ]]; then
+         docker push ${IMGTAG}_linux-amd64
+      fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-jena -t {{prefix}}ubuntu-jena:${JENA_RELEASE_4_10_DISTRO_VERSION}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-arm64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} .
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-jena -t  ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${JENA_RELEASE_4_10_PARENT_TAG}_linux-arm64 --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_4_10_GIT_COMMIT_ID} --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_4_10_DISTRO_VERSION} --build-arg SKIP_JAVADOCS=true .
+      if [[ "{{do_push}}" == "true" ]]; then
+         docker push ${IMGTAG}_linux-arm64
+      fi
    fi
 
 list-jena-upstream-main-commit-id:

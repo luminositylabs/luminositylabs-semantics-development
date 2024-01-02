@@ -10,12 +10,15 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG JENA_GIT_COMMIT_ID=cca8c388
+ARG JENA_GIT_COMMIT_ID=752e9463
 ARG JENA_DISTRO_VERSION=5.0.0-SNAPSHOT
 
 # establish locations for installation and source code
 ENV JENA_HOME=/opt/jena
 ENV JENA_SRC_DIR=/usr/src/build/jena
+
+# determine if building with javadocs should be skipped
+ARG SKIP_JAVADOCS=false
 
 # clone/checkout from revision control
 RUN mkdir -p ${JENA_SRC_DIR} && \
@@ -27,7 +30,7 @@ RUN mkdir -p ${JENA_SRC_DIR} && \
     cd ${JENA_SRC_DIR} && \
     cd apache-jena && \
     git checkout ${JENA_GIT_COMMIT_ID} && \
-    mvn clean install && \
+    mvn -Dmaven.javadoc.skip=${SKIP_JAVADOCS} clean install && \
     mkdir -p ${JENA_HOME} && \
     cd ${JENA_HOME} && \
     tar --strip-components=1 -xvz -f ${JENA_SRC_DIR}/apache-jena/apache-jena/target/apache-jena-${JENA_DISTRO_VERSION}.tar.gz && \
