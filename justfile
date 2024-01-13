@@ -577,7 +577,7 @@ build-maven-11: build-kotlin-11
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t {${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
