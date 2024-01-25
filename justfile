@@ -1042,6 +1042,6 @@ _manifest manifest_name platform_images:
   for P in {{platform_images}}; do
     PARAMS="${PARAMS} {{manifest_name}}_${P}"
   done
-  printf "docker manifest create -a %s\n" "${PARAMS}"
+  docker manifest rm {{manifest_name}}
   docker manifest create -a ${PARAMS}
   docker manifest push {{manifest_name}}
