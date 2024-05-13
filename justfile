@@ -8,7 +8,7 @@ do_push := env_var_or_default('PUSH', 'false')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','jammy-20240427')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20240429')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.412-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.23-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.11-zulu')
@@ -79,7 +79,7 @@ build-ubuntu:
    fi
 
 list-dockerhub-ubuntu-tags:
-   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep jammy
+   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep noble
 
 
 # OpenJDK Zulu recipes
