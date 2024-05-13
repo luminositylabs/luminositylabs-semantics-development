@@ -6,11 +6,11 @@ FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \
-    apt-get -y --no-install-recommends install git libasound2 libgbm1 libgtk-3-0 libnss3 xvfb && \
+    apt-get -y --no-install-recommends install git libasound2t64 libgbm1 libgtk-3-0 libnss3 xvfb && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG JENA_GIT_COMMIT_ID=fb7f4fad
+ARG JENA_GIT_COMMIT_ID=6052757a
 ARG JENA_DISTRO_VERSION=5.1.0-SNAPSHOT
 
 # establish locations for installation and source code
