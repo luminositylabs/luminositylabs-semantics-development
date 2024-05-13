@@ -49,8 +49,8 @@ ENV PATH=${CASSANDRA_HOME}/bin:${PATH}
 
 COPY --from=build /opt/apache-cassandra /opt/apache-cassandra
 
-RUN groupadd -g 1000 cassandra && \
-    useradd -u 1000 -M -s /bin/bash -d ${CASSANDRA_HOME} cassandra -g cassandra && \
+RUN groupadd -g 1001 cassandra && \
+    useradd -u 1001 -M -s /bin/bash -d ${CASSANDRA_HOME} cassandra -g cassandra && \
     chown -R cassandra: ${CASSANDRA_HOME}
 
 USER cassandra
