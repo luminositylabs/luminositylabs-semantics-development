@@ -8,7 +8,7 @@ do_push := env_var_or_default('PUSH', 'false')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20240530')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20240605')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.412-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.23-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.11-zulu')
@@ -63,13 +63,13 @@ build-ubuntu:
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu:latest
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-amd64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+      time docker image build --platform linux/amd64 --progress plain --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-amd64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
       if [[ "{{do_push}}" == "true" ]]; then
         docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-arm64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+      time docker image build --platform linux/arm64 --progress plain --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-arm64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
