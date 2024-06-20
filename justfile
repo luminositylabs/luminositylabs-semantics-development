@@ -18,7 +18,7 @@ export KSCRIPT_VER := env_var_or_default('KSCRIPT_VER','4.2.3')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.4.2')
 export ANT_VER := env_var_or_default('ANT_VER','1.10.13')
 export GRADLE_VER := env_var_or_default('GRADLE_VER','8.8')
-export MAVEN_VER := env_var_or_default('MAVEN_VER','3.9.7')
+export MAVEN_VER := env_var_or_default('MAVEN_VER','3.9.8')
 export SBT_VER := env_var_or_default('SBT_VER','1.10.0')
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','829ce824')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
@@ -92,13 +92,13 @@ build-zulu-8: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -114,13 +114,13 @@ build-zulu-11: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -136,13 +136,13 @@ build-zulu-17: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-arm64
       fi
@@ -158,13 +158,13 @@ build-zulu-21: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-arm64
       fi
@@ -184,13 +184,13 @@ build-kotlin-8: build-zulu-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-arm64
       fi
@@ -206,13 +206,13 @@ build-kotlin-11: build-zulu-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-arm64
       fi
@@ -228,13 +228,13 @@ build-kotlin-17: build-zulu-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -250,13 +250,13 @@ build-kotlin-21: build-zulu-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -276,13 +276,13 @@ build-scala-8: build-zulu-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-scala:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -298,13 +298,13 @@ build-scala-11: build-zulu-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-scala:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -320,13 +320,13 @@ build-scala-17: build-zulu-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-scala:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -342,13 +342,13 @@ build-scala-21: build-zulu-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-scala:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-scala -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SCALA_VER=${SCALA_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -368,13 +368,13 @@ build-ant-8: build-kotlin-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-ant:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -390,13 +390,13 @@ build-ant-11: build-kotlin-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-ant:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -412,13 +412,13 @@ build-ant-17: build-kotlin-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-ant:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -434,13 +434,13 @@ build-ant-21: build-kotlin-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-ant:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-ant -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg ANT_VER=${ANT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -460,13 +460,13 @@ build-gradle-8: build-kotlin-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-gradle:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -482,13 +482,13 @@ build-gradle-11: build-kotlin-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-gradle:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -504,13 +504,13 @@ build-gradle-17: build-kotlin-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-gradle:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -526,13 +526,13 @@ build-gradle-21: build-kotlin-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-gradle:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-gradle -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg GRADLE_VER=${GRADLE_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -552,13 +552,13 @@ build-maven-8: build-kotlin-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-maven:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -574,13 +574,13 @@ build-maven-11: build-kotlin-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-maven:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -596,13 +596,13 @@ build-maven-17: build-kotlin-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-maven:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -618,13 +618,13 @@ build-maven-21: build-kotlin-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-maven:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-maven -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg MAVEN_VER=${MAVEN_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -644,13 +644,13 @@ build-sbt-8: build-scala-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-sbt:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -666,13 +666,13 @@ build-sbt-11: build-scala-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-sbt:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
           docker push ${IMGTAG}_linux-arm64
       fi
@@ -688,13 +688,13 @@ build-sbt-17: build-scala-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-sbt:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -710,13 +710,13 @@ build-sbt-21: build-scala-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-sbt:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-sbt -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg SBT_VER=${SBT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
