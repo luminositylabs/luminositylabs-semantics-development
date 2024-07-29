@@ -51,4 +51,4 @@ EXPOSE 9999
 
 HEALTHCHECK CMD curl -f http://localhost:9999/ || exit 1
 
-CMD [ "java", "-jar", "${BLAZEGRAPH_HOME}/blazegraph.jar" ]
+CMD [ "sh", "-c", "java -jar ${BLAZEGRAPH_HOME}/blazegraph.jar" ]
