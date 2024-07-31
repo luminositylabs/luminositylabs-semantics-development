@@ -10,8 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG WIDOCO_GIT_COMMIT_ID=e6a9f23e
-ARG WIDOCO_DISTRO_VERSION=1.4.24
+ARG WIDOCO_GIT_COMMIT_ID=e94c77e5
+ARG WIDOCO_DISTRO_VERSION=1.4.26
 
 # establish locations for installation and source code
 ENV WIDOCO_HOME=/opt/widoco
