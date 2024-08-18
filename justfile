@@ -779,7 +779,7 @@ build-blazegraph-release: build-maven-8
 list-blazegraph-upstream-master-commit-id:
    git ls-remote https://github.com/blazegraph/database heads/master
 
-list-blazegraph-upstream-main-pom-version:
+list-blazegraph-upstream-master-pom-version:
    curl -Ls https://raw.githubusercontent.com/blazegraph/database/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
 
