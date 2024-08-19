@@ -1,6 +1,6 @@
 ARG PREFIX=llsem-
 ARG PARENT_TAG=21
-FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} as build
+FROM ${PREFIX}ubuntu-maven:${PARENT_TAG} AS build
 
 # install updates and required packages, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
@@ -10,12 +10,12 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG WIDOCO_GIT_COMMIT_ID=e94c77e5
+ARG WIDOCO_GIT_COMMIT_ID=fec66b89
 ARG WIDOCO_DISTRO_VERSION=1.4.26
 
 # establish locations for installation and source code
 ENV WIDOCO_HOME=/opt/widoco
-ENV WIDOCO_SRC_DIR /usr/src/build/widoco
+ENV WIDOCO_SRC_DIR=/usr/src/build/widoco
 
 # clone/checkout from revision control
 RUN mkdir -p ${WIDOCO_SRC_DIR} && \
@@ -35,7 +35,7 @@ RUN mkdir -p ${WIDOCO_SRC_DIR} && \
 
 #############################################################################
 
-FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} as runtime
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} AS runtime
 
 ### ARGs do not appear to span build stages so the same ARG needs to be defined here as well
 ARG WIDOCO_DISTRO_VERSION=1.4.17
