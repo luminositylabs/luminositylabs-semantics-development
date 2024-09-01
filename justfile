@@ -26,12 +26,16 @@ export BLAZEGRAPH_RELEASE_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_RELEAS
 export BLAZEGRAPH_RELEASE_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_RELEASE_DISTRO_VERSION','2.1.5')
 export CASSANDRA_TRUNK_PARENT_TAG := env_var_or_default('CASSANDRA_TRUNK_PARENT_TAG','17')
 export CASSANDRA_TRUNK_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_TRUNK_JAVA_MAJOR_VERSION','17')
-export CASSANDRA_TRUNK_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_TRUNK_GIT_COMMIT_ID','02c50919')
+export CASSANDRA_TRUNK_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_TRUNK_GIT_COMMIT_ID','6e0c3b3e')
 export CASSANDRA_TRUNK_DISTRO_VERSION := env_var_or_default('CASSANDRA_TRUNK_DISTRO_VERSION','5.1-SNAPSHOT')
+export CASSANDRA_RELEASE_5_0_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION','17')
+export CASSANDRA_RELEASE_5_0_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','17')
+export CASSANDRA_RELEASE_5_0_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-5.0.0')
+export CASSANDRA_RELEASE_5_0_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','5.0.0')
 export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION','11')
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
-export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.5')
-export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.5')
+export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.6')
+export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.6')
 export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','ddcb48d6')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','5.2.0-SNAPSHOT')
 export JENA_RELEASE_4_10_PARENT_TAG := env_var_or_default('JENA_RELEASE_4_10_PARENT_TAG','17')
@@ -784,7 +788,7 @@ list-blazegraph-upstream-master-pom-version:
 
 
 # Apache Cassandra recipes
-build-cassandra: build-cassandra-trunk build-cassandra-release-4_1
+build-cassandra: build-cassandra-trunk build-cassandra-release-4_1 build-cassandra-release-5_0
 
 build-cassandra-trunk: build-ant-17
    #!/usr/bin/env bash
@@ -822,6 +826,28 @@ build-cassandra-release-4_1: build-ant-11
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
       time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-cassandra -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG}_linux-arm64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} .
+      if [[ "{{do_push}}" == "true" ]]; then
+         docker push ${IMGTAG}_linux-arm64
+      fi
+   fi
+   if [[ "{{do_push}}" == "true" ]]; then
+      just _manifest "${IMGTAG}" "${MANIFEST_PLATFORMS}"
+   fi
+
+build-cassandra-release-5_0: build-ant-17
+   #!/usr/bin/env bash
+   if [[ "{{do_platform_amd64}}" == "true" ]]; then MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS} linux-amd64"; fi
+   if [[ "{{do_platform_arm64}}" == "true" ]]; then MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS} linux-arm64"; fi
+   MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
+   IMGTAG={{prefix}}ubuntu-cassandra:${CASSANDRA_RELEASE_5_0_DISTRO_VERSION}
+   if [ "{{do_platform_amd64}}" == "true" ]; then
+      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-cassandra -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_5_0_PARENT_TAG}_linux-amd64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_5_0_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_5_0_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_5_0_DISTRO_VERSION} .
+      if [[ "{{do_push}}" == "true" ]]; then
+         docker push ${IMGTAG}_linux-amd64
+      fi
+   fi
+   if [ "{{do_platform_arm64}}" == "true" ]; then
+      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-cassandra -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=${CASSANDRA_RELEASE_5_0_PARENT_TAG}_linux-arm64 --build-arg JAVA_MAJOR_VERSION=${CASSANDRA_RELEASE_5_0_JAVA_MAJOR_VERSION} --build-arg CASSANDRA_GIT_COMMIT_ID=${CASSANDRA_RELEASE_5_0_GIT_COMMIT_ID} --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_5_0_DISTRO_VERSION} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi

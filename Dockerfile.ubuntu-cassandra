@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in ant
-ARG CASSANDRA_GIT_COMMIT_ID=02c50919
+ARG CASSANDRA_GIT_COMMIT_ID=6e0c3b3e
 ARG CASSANDRA_DISTRO_VERSION=5.1-SNAPSHOT
 
 # establish locations for installation and source code
@@ -30,6 +30,10 @@ RUN mkdir -p ${CASSANDRA_SRC_DIR} && \
     git checkout ${CASSANDRA_GIT_COMMIT_ID} && \
     if [[ "${JAVA_MAJOR_VERSION}" == "11" ]]; then \
        ant -Duse.jdk11=true -Drelease=true artifacts ; \
+       mkdir -p ${CASSANDRA_HOME} ; \
+       tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
+    elif [[ "${CASSANDRA_DISTRO_VERSION}" != *"SNAPSHOT" ]]; then \
+       ant -Drelease=true artifacts ; \
        mkdir -p ${CASSANDRA_HOME} ; \
        tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
     else \
