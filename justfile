@@ -8,7 +8,7 @@ do_push := env_var_or_default('PUSH', 'false')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20240801')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20240827.1')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.422-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.24-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.12-zulu')
