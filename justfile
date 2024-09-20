@@ -15,7 +15,7 @@ export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.12-zu
 export JAVA_VER_DISTRO_21 := env_var_or_default('JAVA_VER_DISTRO_21','21.0.4-zulu')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','2.0.20')
 export KSCRIPT_VER := env_var_or_default('KSCRIPT_VER','4.2.3')
-export SCALA_VER := env_var_or_default('SCALA_VER','3.5.0')
+export SCALA_VER := env_var_or_default('SCALA_VER','3.5.1')
 export ANT_VER := env_var_or_default('ANT_VER','1.10.14')
 export GRADLE_VER := env_var_or_default('GRADLE_VER','8.10.1')
 export MAVEN_VER := env_var_or_default('MAVEN_VER','3.9.9')
@@ -99,13 +99,13 @@ build-zulu-8: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+      time docker image build --platform linux/amd64 --provenance false --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-amd64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
+      time docker image build --platform linux/arm64 --provenance false --progress plain -f Dockerfile.ubuntu-zulu -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=latest_linux-arm64 --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8}  .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
