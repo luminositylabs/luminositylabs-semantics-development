@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin versions
-ARG SBT_VER=1.10.5
+ARG SBT_VER=1.10.6
 
 # install software
 ENV SDKMAN_DIR=/opt/sdkman
