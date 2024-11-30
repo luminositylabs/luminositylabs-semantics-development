@@ -9,7 +9,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin versions
-ARG KOTLIN_VER=2.0.21
+ARG KOTLIN_VER=2.1.0
 ARG KSCRIPT_VER=4.2.3
 
 # install software
