@@ -2,24 +2,29 @@ ARG PREFIX=llsem-
 ARG PARENT_TAG=21
 FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG}
 
-# install updates, and cleanup afterward
+# install updates and required packages, and cleanup afterward
 RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get update && \
     apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install curl unzip zip && \
     rm -rf /var/lib/apt/lists/*
+
+# set environment variables SDKMAN software
+ENV SDKMAN_DIR=/opt/sdkman
 
 # pin versions
 ARG KOTLIN_VER=2.1.0
 ARG KSCRIPT_VER=4.2.3
 
-# install software
-ENV SDKMAN_DIR=/opt/sdkman
+# install Kotlin software
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install kotlin ${KOTLIN_VER}
+ENV KOTLIN_HOME=${SDKMAN_DIR}/candidates/kotlin/current
+
+# install kcript software
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install kscript ${KSCRIPT_VER}
+ENV KSCRIPT_HOME=${SDKMAN_DIR}/candidates/kscript/current
 
 # set environment variables
-ENV KOTLIN_HOME=${SDKMAN_DIR}/candidates/kotlin/current
-ENV KSCRIPT_HOME=${SDKMAN_DIR}/candidates/kscript/current
 ENV PATH=${KSCRIPT_HOME}/bin:${KOTLIN_HOME}/bin:${PATH}

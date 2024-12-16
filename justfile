@@ -186,15 +186,15 @@ build-kotlin-8: build-zulu-8
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=8_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
-          docker push ${IMGTAG}_linux-arm64
+         docker push ${IMGTAG}_linux-arm64
       fi
    fi
    if [[ "{{do_push}}" == "true" ]]; then
@@ -208,15 +208,15 @@ build-kotlin-11: build-zulu-11
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=11_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
-          docker push ${IMGTAG}_linux-arm64
+         docker push ${IMGTAG}_linux-arm64
       fi
    fi
    if [[ "{{do_push}}" == "true" ]]; then
@@ -230,13 +230,13 @@ build-kotlin-17: build-zulu-17
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=17_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -252,13 +252,13 @@ build-kotlin-21: build-zulu-21
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-kotlin:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-amd64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain -f Dockerfile.ubuntu-kotlin -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
+      time docker image build -f Dockerfile.ubuntu-kotlin --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg PARENT_TAG=21_linux-arm64 --build-arg KOTLIN_VER=${KOTLIN_VER} --build-arg KSCRIPT_VER=${KSCRIPT_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
