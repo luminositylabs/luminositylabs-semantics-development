@@ -65,13 +65,13 @@ build-ubuntu:
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu:latest
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build --platform linux/amd64 --progress plain --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-amd64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+      time docker image build --pull -f Dockerfile.ubuntu --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
       if [[ "{{do_push}}" == "true" ]]; then
-        docker push ${IMGTAG}_linux-amd64
+         docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build --platform linux/arm64 --progress plain --pull -f Dockerfile.ubuntu -t ${IMGTAG}_linux-arm64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
+      time docker image build --pull -f Dockerfile.ubuntu --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PARENT_TAG=${UBUNTU_TAG} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -1069,12 +1069,16 @@ list-widoco-upstream-master-pom-version:
 
 
 _manifest manifest_name platform_images:
-  #!/usr/bin/env bash
-  printf "Creating manifest with name [%s] from platform tags [%s]\n" "{{manifest_name}}" "{{platform_images}}"
-  PARAMS="{{manifest_name}}"
-  for P in {{platform_images}}; do
-    PARAMS="${PARAMS} {{manifest_name}}_${P}"
-  done
-  docker manifest rm {{manifest_name}}
-  docker manifest create -a ${PARAMS}
-  docker manifest push {{manifest_name}}
+   #!/usr/bin/env bash
+   printf "Creating manifest with name [%s] from platform tags [%s]\n" "{{manifest_name}}" "{{platform_images}}"
+   PARAMS="{{manifest_name}}"
+   for P in {{platform_images}}; do
+      PARAMS="${PARAMS} {{manifest_name}}_${P}"
+   done
+   docker manifest rm {{manifest_name}} || printf "creating new manifest with params %s\n" "${PARAMS}"
+   docker manifest create -a ${PARAMS}
+   docker manifest push {{manifest_name}}
+   docker image pull {{manifest_name}}
+   for P in {{platform_images}}; do
+      docker image rm "{{manifest_name}}_${P}"
+   done
