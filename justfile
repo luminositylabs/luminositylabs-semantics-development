@@ -94,13 +94,13 @@ build-zulu-8: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:8
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_8} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -116,13 +116,13 @@ build-zulu-11: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:11
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_11} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -138,13 +138,13 @@ build-zulu-17: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:17
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_17} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
@@ -160,13 +160,13 @@ build-zulu-21: build-ubuntu
    MANIFEST_PLATFORMS="${MANIFEST_PLATFORMS## }"
    IMGTAG={{prefix}}ubuntu-zulu:21
    if [ "{{do_platform_amd64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/amd64 --provenance false --progress plain -t ${IMGTAG}_linux-amd64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-amd64
       fi
    fi
    if [ "{{do_platform_arm64}}" == "true" ]; then
-      time docker image build -f Dockerfile.ubuntu-zulu --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} --build-arg JBANG_VER=${JBANG_VER} .
+      time docker image build -f Dockerfile.ubuntu-zulu-multistage --platform linux/arm64 --provenance false --progress plain -t ${IMGTAG}_linux-arm64 --build-arg PREFIX={{prefix}} --build-arg JAVA_VER_DISTRO=${JAVA_VER_DISTRO_21} --build-arg JBANG_VER=${JBANG_VER} .
       if [[ "{{do_push}}" == "true" ]]; then
          docker push ${IMGTAG}_linux-arm64
       fi
