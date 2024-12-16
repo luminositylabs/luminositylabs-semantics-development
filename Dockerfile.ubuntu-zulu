@@ -9,19 +9,23 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     apt-get -y --no-install-recommends install curl unzip zip && \
     rm -rf /var/lib/apt/lists/*
 
+# install SDKMAN software
+ENV SDKMAN_DIR=/opt/sdkman
+RUN curl -s "https://get.sdkman.io" | bash
+
 # pin versions
 ARG JAVA_VER_DISTRO=21.0.5-zulu
 ARG JBANG_VER=0.121.0
 
-# install software
-ENV SDKMAN_DIR=/opt/sdkman
-RUN curl -s "https://get.sdkman.io" | bash && \
-    source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
+# install JVM software
+RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install java ${JAVA_VER_DISTRO}
+ENV JAVA_HOME=${SDKMAN_DIR}/candidates/java/current
+
+# install JBang software
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
     sdk install jbang ${JBANG_VER}
+ENV JBANG_HOME=${SDKMAN_DIR}/candidates/jbang/current
 
 # set environment variables
-ENV JAVA_HOME=${SDKMAN_DIR}/candidates/java/current
-ENV JBANG_HOME=${SDKMAN_DIR}/candidates/jbang/current
 ENV PATH=${JBANG_HOME}/bin:${JAVA_HOME}/bin:${PATH}
