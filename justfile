@@ -5,6 +5,7 @@ tag_prefix := env_var_or_default('TAG_PREFIX','llsem-')
 prefix := repo + "/" + tag_prefix
 
 do_push := env_var_or_default('PUSH', 'false')
+post_push_sleep_seconds := env_var_or_default('POST_PUSH_SLEEP_SECONDS', '0')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 
@@ -76,6 +77,7 @@ build-ubuntu:
                         --build-arg PARENT_TAG=${UBUNTU_TAG} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 list-dockerhub-ubuntu-tags:
    curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep noble
@@ -119,6 +121,7 @@ _build-zulu-V V:
                         --build-arg JBANG_VER=${JBANG_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Kotlin recipes
@@ -158,6 +161,7 @@ _build-kotlin-V V:
                         --build-arg KOTLIN_VER=${KOTLIN_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Scala recipes
@@ -197,6 +201,7 @@ _build-scala-V V:
                         --build-arg SCALA_VER=${SCALA_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Apache Ant recipes
@@ -236,6 +241,7 @@ _build-ant-V V:
                         --build-arg ANT_VER=${ANT_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Gradle recipes
@@ -275,6 +281,7 @@ _build-gradle-V V:
                         --build-arg GRADLE_VER=${GRADLE_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Apache Maven recipes
@@ -314,6 +321,7 @@ _build-maven-V V:
                         --build-arg MAVEN_VER=${MAVEN_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # SBT recipes
@@ -353,6 +361,7 @@ _build-sbt-V V:
                         --build-arg SBT_VER=${SBT_VER} \
                         .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 # Blazegraph recipes
@@ -379,6 +388,7 @@ build-blazegraph-8: build-maven-8
                               --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_DISTRO_VERSION} \
                               .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 build-blazegraph-release: build-maven-8
    #!/usr/bin/env bash
@@ -400,6 +410,7 @@ build-blazegraph-release: build-maven-8
                               --build-arg BLAZEGRAPH_DISTRO_VERSION=${BLAZEGRAPH_RELEASE_DISTRO_VERSION} \
                               .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 list-blazegraph-upstream-master-commit-id:
@@ -433,6 +444,7 @@ build-cassandra-trunk: build-ant-17
                               --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_TRUNK_DISTRO_VERSION} \
                               .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 build-cassandra-release-4_1: build-ant-11
    #!/usr/bin/env bash
@@ -455,6 +467,7 @@ build-cassandra-release-4_1: build-ant-11
                               --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_4_1_DISTRO_VERSION} \
                               .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 build-cassandra-release-5_0: build-ant-17
    #!/usr/bin/env bash
@@ -477,6 +490,7 @@ build-cassandra-release-5_0: build-ant-17
                               --build-arg CASSANDRA_DISTRO_VERSION=${CASSANDRA_RELEASE_5_0_DISTRO_VERSION} \
                               .
    fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 list-cassandra-upstream-trunk-commit-id:
    git ls-remote https://github.com/apache/cassandra heads/trunk
@@ -696,4 +710,11 @@ _build-manifest manifest_name platform_images:
       for P in {{platform_images}}; do
          docker image rm "{{manifest_name}}_${P}"
       done
+   fi
+
+_push_image image_name post_push_wait_seconds:
+   #!/usr/bin/env bash
+   if [[ "{{do_push}}" == "true" ]]; then
+      docker image push {{image_name}}
+      sleep {{post_push_wait_seconds}}
    fi
