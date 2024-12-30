@@ -72,7 +72,6 @@ build-ubuntu:
       time docker build -f Dockerfile.ubuntu -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
                         --pull \
-                        --provenance false \
                         --progress plain \
                         --build-arg PARENT_TAG=${UBUNTU_TAG} \
                         .
@@ -113,7 +112,6 @@ _build-zulu-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-zulu -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG=latest \
@@ -154,7 +152,6 @@ _build-kotlin-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-kotlin -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}}\
@@ -194,7 +191,6 @@ _build-scala-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-scala -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -234,7 +230,6 @@ _build-ant-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-ant -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -274,7 +269,6 @@ _build-gradle-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-gradle -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -314,7 +308,6 @@ _build-maven-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-maven -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -354,7 +347,6 @@ _build-sbt-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-sbt -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
-                        --provenance false \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -380,7 +372,6 @@ build-blazegraph-8: build-maven-8
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-blazegraph -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=8 \
@@ -402,7 +393,6 @@ build-blazegraph-release: build-maven-8
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-blazegraph -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=8 \
@@ -435,7 +425,6 @@ build-cassandra-trunk: build-ant-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} \
@@ -458,7 +447,6 @@ build-cassandra-release-4_1: build-ant-11
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} \
@@ -481,7 +469,6 @@ build-cassandra-release-5_0: build-ant-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_RELEASE_5_0_PARENT_TAG} \
@@ -520,7 +507,6 @@ build-jena-release-5_2: build-maven-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-jena -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${JENA_RELEASE_5_2_PARENT_TAG} \
@@ -542,7 +528,6 @@ _build-jena-main-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-jena -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
@@ -585,7 +570,6 @@ build-spark-release-3_5: build-maven-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-spark -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG} \
@@ -607,7 +591,6 @@ _build-spark-master-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-spark -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
@@ -645,7 +628,6 @@ _build-widoco-main-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-widoco -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
-                              --provenance false \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
