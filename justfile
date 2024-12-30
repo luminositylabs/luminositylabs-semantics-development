@@ -43,7 +43,7 @@ export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION'
 export JENA_RELEASE_5_2_PARENT_TAG := env_var_or_default('JENA_RELEASE_5_2_PARENT_TAG','17')
 export JENA_RELEASE_5_2_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_5_2_GIT_COMMIT_ID','jena-5.2.0-ll')
 export JENA_RELEASE_5_2_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_5_2_DISTRO_VERSION','5.2.0')
-export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','af53ee45')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','97ee25a7')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','4.0.0-SNAPSHOT')
 export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
 export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_GIT_COMMIT_ID','v3.5.4')
@@ -359,7 +359,6 @@ _build-sbt-V V:
 # Blazegraph recipes
 build-blazegraph: build-blazegraph-8 build-blazegraph-release
 
-
 build-blazegraph-8: build-maven-8
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-blazegraph:latest
@@ -401,7 +400,6 @@ build-blazegraph-release: build-maven-8
                               .
    fi
    just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
-
 
 list-blazegraph-upstream-master-commit-id:
    git ls-remote https://github.com/blazegraph/database heads/master
@@ -548,6 +546,7 @@ list-jena-upstream-main-commit-id:
 
 list-jena-upstream-main-pom-version:
    curl -Ls https://raw.githubusercontent.com/apache/jena/main/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
+
 
 # Spark recipes
 build-spark: build-spark-master-17 build-spark-master-21 build-spark-release-3_5
