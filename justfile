@@ -9,7 +9,7 @@ post_push_sleep_seconds := env_var_or_default('POST_PUSH_SLEEP_SECONDS', '0')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20241118.1')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20250127')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.442-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.26-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.14-zulu')
