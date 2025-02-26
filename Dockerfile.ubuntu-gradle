@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin versions
-ARG GRADLE_VER=8.12
+ARG GRADLE_VER=8.13
 
 # install software
 ENV SDKMAN_DIR=/opt/sdkman
