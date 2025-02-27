@@ -10,8 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin versions
-ARG JAVA_VER_DISTRO=21.0.5-zulu
-ARG JBANG_VER=0.122.0
+ARG JAVA_VER_DISTRO=21.0.6-zulu
+ARG JBANG_VER=0.124.0
 
 # install software
 ENV SDKMAN_DIR=/opt/sdkman
