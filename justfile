@@ -8,6 +8,7 @@ do_push := env_var_or_default('PUSH', 'false')
 post_push_sleep_seconds := env_var_or_default('POST_PUSH_SLEEP_SECONDS', '0')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
+use_cache := env_var_or_default('USE_CACHE', 'true')
 
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20250127')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.442-zulu')
@@ -64,6 +65,7 @@ build-ubuntu:
    IMGTAG={{prefix}}ubuntu:latest
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "false" ]]; then CACHE=" --no-cache "; fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -71,6 +73,7 @@ build-ubuntu:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --pull \
                         --progress plain \
                         --build-arg PARENT_TAG=${UBUNTU_TAG} \
