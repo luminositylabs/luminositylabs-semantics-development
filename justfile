@@ -9,6 +9,7 @@ post_push_sleep_seconds := env_var_or_default('POST_PUSH_SLEEP_SECONDS', '0')
 do_platform_amd64 := env_var_or_default('PLATFORM_AMD64', 'true')
 do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 use_cache := env_var_or_default('USE_CACHE', 'true')
+external_cache_dir_name := env_var_or_default('EXTERNAL_CACHE_DIR_NAME', 'external-cache')
 
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20250404')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.452-zulu')
@@ -65,7 +66,12 @@ build-ubuntu:
    IMGTAG={{prefix}}ubuntu:latest
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
-   if [[ "{{use_cache}}" == "false" ]]; then CACHE=" --no-cache "; fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/ubuntu/ubuntu --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/ubuntu/ubuntu "
+   fi
+   if [[ "{{use_cache}}" == "false" ]]; then
+      CACHE=" --no-cache "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -108,6 +114,9 @@ _build-zulu-V V:
    IMGTAG={{prefix}}ubuntu-zulu:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/zulu/zulu-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/zulu/zulu-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -115,6 +124,7 @@ _build-zulu-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-zulu -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG=latest \
@@ -148,6 +158,9 @@ _build-kotlin-V V:
    IMGTAG={{prefix}}ubuntu-kotlin:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/kotlin/kotlin-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/kotlin/kotlin-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -155,6 +168,7 @@ _build-kotlin-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-kotlin -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}}\
@@ -187,6 +201,9 @@ _build-scala-V V:
    IMGTAG={{prefix}}ubuntu-scala:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/scala/scala-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/scala/scala-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -194,6 +211,7 @@ _build-scala-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-scala -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -226,6 +244,9 @@ _build-ant-V V:
    IMGTAG={{prefix}}ubuntu-ant:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/ant/ant-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/ant/ant-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -233,6 +254,7 @@ _build-ant-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-ant -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -265,6 +287,9 @@ _build-gradle-V V:
    IMGTAG={{prefix}}ubuntu-gradle:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/gradle/gradle-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/gradle/gradle-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -272,6 +297,7 @@ _build-gradle-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-gradle -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -304,6 +330,9 @@ _build-maven-V V:
    IMGTAG={{prefix}}ubuntu-maven:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/maven/maven-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/maven/maven-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -311,6 +340,7 @@ _build-maven-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-maven -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -343,6 +373,9 @@ _build-sbt-V V:
    IMGTAG={{prefix}}ubuntu-sbt:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/sbt/sbt-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/sbt/sbt-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -350,6 +383,7 @@ _build-sbt-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker build -f Dockerfile.ubuntu-sbt -t ${IMGTAG} \
                         --platform "${PLATFORMS}" \
+                        ${CACHE} \
                         --progress plain \
                         --build-arg PREFIX={{prefix}} \
                         --build-arg PARENT_TAG={{V}} \
@@ -367,6 +401,9 @@ build-blazegraph-8: build-maven-8
    IMGTAG={{prefix}}ubuntu-blazegraph:latest
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/blazegraph/blazegraph-8 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/blazegraph/blazegraph-8 "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -374,6 +411,7 @@ build-blazegraph-8: build-maven-8
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-blazegraph -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=8 \
@@ -388,6 +426,9 @@ build-blazegraph-release: build-maven-8
    IMGTAG={{prefix}}ubuntu-blazegraph:${BLAZEGRAPH_RELEASE_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/blazegraph/blazegraph-release --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/blazegraph/blazegraph-release "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -395,6 +436,7 @@ build-blazegraph-release: build-maven-8
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-blazegraph -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=8 \
@@ -419,6 +461,9 @@ build-cassandra-trunk: build-ant-17
    IMGTAG={{prefix}}ubuntu-cassandra:latest
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-trunk --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-trunk "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -426,6 +471,7 @@ build-cassandra-trunk: build-ant-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_TRUNK_PARENT_TAG} \
@@ -441,6 +487,9 @@ build-cassandra-release-4_1: build-ant-11
    IMGTAG={{prefix}}ubuntu-cassandra:${CASSANDRA_RELEASE_4_1_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-release-4_1 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-release-4_1 "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -448,6 +497,7 @@ build-cassandra-release-4_1: build-ant-11
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_RELEASE_4_1_PARENT_TAG} \
@@ -463,6 +513,9 @@ build-cassandra-release-5_0: build-ant-17
    IMGTAG={{prefix}}ubuntu-cassandra:${CASSANDRA_RELEASE_5_0_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-release-5_0 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/cassandra/cassandra-release-5_0 "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -470,6 +523,7 @@ build-cassandra-release-5_0: build-ant-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-cassandra -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${CASSANDRA_RELEASE_5_0_PARENT_TAG} \
@@ -501,6 +555,9 @@ build-jena-release-5_3: build-maven-17
    IMGTAG={{prefix}}ubuntu-jena:${JENA_RELEASE_5_3_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_3 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_3 "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -508,6 +565,7 @@ build-jena-release-5_3: build-maven-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-jena -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${JENA_RELEASE_5_3_PARENT_TAG} \
@@ -522,6 +580,9 @@ _build-jena-main-V V:
    IMGTAG={{prefix}}ubuntu-jena:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/jena/jena-main-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/jena/jena-main-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -529,6 +590,7 @@ _build-jena-main-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-jena -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
@@ -623,6 +685,9 @@ _build-widoco-main-V V:
    IMGTAG={{prefix}}ubuntu-widoco:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/widoco/widoco-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/widoco/widoco-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -630,6 +695,7 @@ _build-widoco-main-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-widoco -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
