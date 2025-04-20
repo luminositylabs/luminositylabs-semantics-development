@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin versions
-ARG JAVA_VER_DISTRO=21.0.6-zulu
+ARG JAVA_VER_DISTRO=21.0.7-zulu
 ARG JBANG_VER=0.125.1
 
 # install software
