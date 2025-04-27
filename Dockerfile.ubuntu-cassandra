@@ -33,11 +33,11 @@ RUN mkdir -p ${CASSANDRA_SRC_DIR} && \
        mkdir -p ${CASSANDRA_HOME} ; \
        tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
     elif [[ "${CASSANDRA_DISTRO_VERSION}" != *"SNAPSHOT" ]]; then \
-       ant -Drelease=true artifacts ; \
+       ant -Drelease=true -Dant.gen-doc.skip=true artifacts ; \
        mkdir -p ${CASSANDRA_HOME} ; \
        tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
     else \
-       ant artifacts ; \
+       ant -Dant.gen-doc.skip=true artifacts ; \
        mkdir -p ${CASSANDRA_HOME} ; \
        tar xvfz build/apache-cassandra-${CASSANDRA_DISTRO_VERSION}-bin.tar.gz --strip=1 -C ${CASSANDRA_HOME} ; \
     fi
