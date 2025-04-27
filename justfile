@@ -42,9 +42,9 @@ export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELE
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.8')
 export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','71a9279f')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','5.4.0-SNAPSHOT')
-export JENA_RELEASE_5_3_PARENT_TAG := env_var_or_default('JENA_RELEASE_5_3_PARENT_TAG','17')
-export JENA_RELEASE_5_3_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_5_3_GIT_COMMIT_ID','jena-5.3.0')
-export JENA_RELEASE_5_3_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_5_3_DISTRO_VERSION','5.3.0')
+export JENA_RELEASE_5_4_PARENT_TAG := env_var_or_default('JENA_RELEASE_5_4_PARENT_TAG','17')
+export JENA_RELEASE_5_4_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_5_4_GIT_COMMIT_ID','jena-5.4.0')
+export JENA_RELEASE_5_4_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_5_4_DISTRO_VERSION','5.4.0')
 export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','7c12ff62')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','4.1.0-SNAPSHOT')
 export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
@@ -542,7 +542,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-17 build-jena-main-21 build-jena-release-5_3
+build-jena: build-jena-main-17 build-jena-main-21 build-jena-release-5_4
 
 build-jena-main-17: build-maven-17
    just _build-jena-main-V 17
@@ -550,13 +550,13 @@ build-jena-main-17: build-maven-17
 build-jena-main-21: build-maven-21
    just _build-jena-main-V 21
 
-build-jena-release-5_3: build-maven-17
+build-jena-release-5_4: build-maven-17
    #!/usr/bin/env bash
-   IMGTAG={{prefix}}ubuntu-jena:${JENA_RELEASE_5_3_DISTRO_VERSION}
+   IMGTAG={{prefix}}ubuntu-jena:${JENA_RELEASE_5_4_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
    if [[ "{{use_cache}}" == "true" ]]; then
-      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_3 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_3 "
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_4 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/jena/jena-release-5_4 "
    fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
@@ -568,9 +568,9 @@ build-jena-release-5_3: build-maven-17
                               ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
-                              --build-arg PARENT_TAG=${JENA_RELEASE_5_3_PARENT_TAG} \
-                              --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_5_3_GIT_COMMIT_ID} \
-                              --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_5_3_DISTRO_VERSION} \
+                              --build-arg PARENT_TAG=${JENA_RELEASE_5_4_PARENT_TAG} \
+                              --build-arg JENA_GIT_COMMIT_ID=${JENA_RELEASE_5_4_GIT_COMMIT_ID} \
+                              --build-arg JENA_DISTRO_VERSION=${JENA_RELEASE_5_4_DISTRO_VERSION} \
                               .
    fi
    just _push_image "${IMGTAG}" {{post_push_sleep_seconds}}
