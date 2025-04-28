@@ -627,6 +627,9 @@ build-spark-release-3_5: build-maven-17
    IMGTAG={{prefix}}ubuntu-spark:${SPARK_RELEASE_3_5_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/spark/spark-release-3_5 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/spark/spark-release-3_5 "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -634,6 +637,7 @@ build-spark-release-3_5: build-maven-17
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-spark -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG} \
@@ -648,6 +652,9 @@ _build-spark-master-V V:
    IMGTAG={{prefix}}ubuntu-spark:{{V}}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
    if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/spark/spark-master-{{V}} --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/spark/spark-master-{{V}} "
+   fi
    for I in ${!_PLATFORMS[@]}; do
       if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
       PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
@@ -655,6 +662,7 @@ _build-spark-master-V V:
    if [[ "${PLATFORMS}" != "" ]]; then
       time docker image build -f Dockerfile.ubuntu-spark -t ${IMGTAG} \
                               --platform "${PLATFORMS}" \
+                              ${CACHE} \
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
