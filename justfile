@@ -45,11 +45,14 @@ export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION'
 export JENA_RELEASE_5_4_PARENT_TAG := env_var_or_default('JENA_RELEASE_5_4_PARENT_TAG','17')
 export JENA_RELEASE_5_4_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_5_4_GIT_COMMIT_ID','jena-5.4.0')
 export JENA_RELEASE_5_4_DISTRO_VERSION := env_var_or_default('JENA_RELEASE_5_4_DISTRO_VERSION','5.4.0')
-export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','ba9e0ae5')
+export SPARK_MASTER_GIT_COMMIT_ID := env_var_or_default('SPARK_MASTER_GIT_COMMIT_ID','7b499191')
 export SPARK_MASTER_DISTRO_VERSION := env_var_or_default('SPARK_MASTER_DISTRO_VERSION','4.1.0-SNAPSHOT')
+export SPARK_RELEASE_4_0_PARENT_TAG := env_var_or_default('SPARK_RELEASE_4_0_PARENT_TAG','17')
+export SPARK_RELEASE_4_0_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_4_0_GIT_COMMIT_ID','v4.0.0')
+export SPARK_RELEASE_4_0_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_4_0_DISTRO_VERSION','4.0.0')
 export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
-export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_GIT_COMMIT_ID','v3.5.5')
-export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_3_5_DISTRO_VERSION','3.5.5')
+export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_GIT_COMMIT_ID','v3.5.6')
+export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_3_5_DISTRO_VERSION','3.5.6')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','5d9b0e77')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.26')
 
@@ -614,7 +617,7 @@ list-jena-upstream-main-pom-version:
 
 
 # Spark recipes
-build-spark: build-spark-master-17 build-spark-master-21 build-spark-release-3_5
+build-spark: build-spark-master-17 build-spark-master-21 build-spark-release-3_5 build-spark-release-4_0
 
 build-spark-master-17: build-maven-17
    just _build-spark-master-V 17
@@ -643,6 +646,31 @@ build-spark-release-3_5: build-maven-17
                               --build-arg PARENT_TAG=${SPARK_RELEASE_3_5_PARENT_TAG} \
                               --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_3_5_GIT_COMMIT_ID} \
                               --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_3_5_DISTRO_VERSION} \
+                              .
+   fi
+   just _push_image "${IMGTAG}" {{post_push_sleep_seconds}}
+
+build-spark-release-4_0: build-maven-17
+   #!/usr/bin/env bash
+   IMGTAG={{prefix}}ubuntu-spark:${SPARK_RELEASE_4_0_DISTRO_VERSION}
+   if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
+   if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/spark/spark-release-4_0 --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/spark/spark-release-4_0 "
+   fi
+   for I in ${!_PLATFORMS[@]}; do
+      if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
+      PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
+   done
+   if [[ "${PLATFORMS}" != "" ]]; then
+      time docker image build -f Dockerfile.ubuntu-spark -t ${IMGTAG} \
+                              --platform "${PLATFORMS}" \
+                              ${CACHE} \
+                              --progress plain \
+                              --build-arg PREFIX={{prefix}} \
+                              --build-arg PARENT_TAG=${SPARK_RELEASE_4_0_PARENT_TAG} \
+                              --build-arg SPARK_GIT_COMMIT_ID=${SPARK_RELEASE_4_0_GIT_COMMIT_ID} \
+                              --build-arg SPARK_DISTRO_VERSION=${SPARK_RELEASE_4_0_DISTRO_VERSION} \
                               .
    fi
    just _push_image "${IMGTAG}" {{post_push_sleep_seconds}}
