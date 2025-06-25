@@ -13,7 +13,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
 ENV SDKMAN_DIR=/opt/sdkman
 
 # pin versions
-ARG KOTLIN_VER=2.1.21
+ARG KOTLIN_VER=2.2.0
 
 # install Kotlin software
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
