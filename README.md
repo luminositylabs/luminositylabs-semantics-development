@@ -41,3 +41,43 @@ To get list of the buildable images, type `just --list` to get a list of builds 
 
 To build a specific image, type the name of the build recipe corresponding to the image to build
  (ex: `just build-blazegraph`)
+
+### Container Image Dependency Graph
+
+The following diagram illustrates which container images depend on others:
+
+```mermaid
+graph BT
+    %% Base image
+    ubuntu[Ubuntu]
+
+    %% Direct children of Ubuntu
+    ubuntu_zulu["Ubuntu‑Zulu"]
+    ubuntu_kotlin["Ubuntu‑Kotlin"]
+    ubuntu_scala["Ubuntu‑Scala"]
+    ubuntu_ant["Ubuntu‑Ant"]
+    ubuntu_gradle["Ubuntu‑Gradle"]
+    ubuntu_maven["Ubuntu‑Maven"]
+    ubuntu_sbt["Ubuntu‑SBT"]
+    ubuntu_blazegraph["Ubuntu‑Blazegraph"]
+    ubuntu_cassandra["Ubuntu‑Cassandra"]
+    ubuntu_jena["Ubuntu‑Jena"]
+    ubuntu_spark["Ubuntu‑Spark"]
+
+    %% Widoco depends on Maven and Zulu runtimes
+    ubuntu_widoco["Ubuntu‑Widoco"]
+
+    %% Edges
+    ubuntu_ant --> ubuntu_kotlin
+    ubuntu_blazegraph --> ubuntu_maven 
+    ubuntu_cassandra --> ubuntu_ant 
+    ubuntu_gradle --> ubuntu_kotlin
+    ubuntu_jena --> ubuntu_maven
+    ubuntu_kotlin --> ubuntu_zulu
+    ubuntu_maven --> ubuntu_kotlin
+    ubuntu_sbt --> ubuntu_scala
+    ubuntu_scala --> ubuntu_zulu 
+    ubuntu_spark --> ubuntu_maven
+    ubuntu_widoco --> ubuntu_maven
+    ubuntu_zulu --> ubuntu
+```
