@@ -10,7 +10,7 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG JENA_GIT_COMMIT_ID=ed40acfe
+ARG JENA_GIT_COMMIT_ID=44cf5a04
 ARG JENA_DISTRO_VERSION=5.6.0-SNAPSHOT
 
 # establish locations for installation and source code
