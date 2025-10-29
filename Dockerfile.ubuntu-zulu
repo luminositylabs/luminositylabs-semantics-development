@@ -14,7 +14,7 @@ ENV SDKMAN_DIR=/opt/sdkman
 RUN curl -s "https://get.sdkman.io" | bash
 
 # pin versions
-ARG JAVA_VER_DISTRO=21.0.8-zulu
+ARG JAVA_VER_DISTRO=21.0.9-zulu
 ARG JBANG_VER=0.132.1
 
 # install JVM software
