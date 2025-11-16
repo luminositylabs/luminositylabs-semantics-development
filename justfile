@@ -11,7 +11,7 @@ do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 use_cache := env_var_or_default('USE_CACHE', 'true')
 external_cache_dir_name := env_var_or_default('EXTERNAL_CACHE_DIR_NAME', 'external-cache')
 
-export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20251001')
+export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','noble-20251013')
 export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.472-zulu')
 export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.29-zulu')
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.17-zulu')
