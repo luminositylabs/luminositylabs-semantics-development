@@ -53,7 +53,7 @@ export SPARK_RELEASE_4_0_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_4_0
 export SPARK_RELEASE_3_5_PARENT_TAG := env_var_or_default('SPARK_RELEASE_3_5_PARENT_TAG','17')
 export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_GIT_COMMIT_ID','v3.5.6')
 export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_3_5_DISTRO_VERSION','3.5.6')
-export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','5d9b0e77')
+export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','7400eb84')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.26')
 
 
