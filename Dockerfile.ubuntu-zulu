@@ -15,7 +15,7 @@ RUN curl -s "https://get.sdkman.io" | bash
 
 # pin versions
 ARG JAVA_VER_DISTRO=21.0.9-zulu
-ARG JBANG_VER=0.135.0
+ARG JBANG_VER=0.135.1
 
 # install JVM software
 RUN source "${SDKMAN_DIR}/bin/sdkman-init.sh" && \
