@@ -55,10 +55,8 @@ export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_
 export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_3_5_DISTRO_VERSION','3.5.6')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','7400eb84')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.26')
-export FABRIKT_RELEASE_26_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','26.1.0')
-
-export FABRIKT_MAIN_GIT_COMMIT_ID := env_var_or_default('FABRIKT_MAIN_GIT_COMMIT_ID','25d6b354')
-export FABRIKT_MAIN_DISTRO_VERSION := env_var_or_default('FABRIKT_MAIN_DISTRO_VERSION','26.1.0-1')
+export FABRIKT_GIT_COMMIT_ID := env_var_or_default('FABRIKT_GIT_COMMIT_ID','25d6b354')
+export FABRIKT_DISTRO_VERSION := env_var_or_default('FABRIKT_DISTRO_VERSION','26.1.0-1')
 export FABRIKT_RELEASE_26_1_PARENT_TAG := env_var_or_default('FABRIKT_RELEASE_26_1_PARENT_TAG','17')
 export FABRIKT_RELEASE_26_1_GIT_COMMIT_ID := env_var_or_default('FABRIKT_RELEASE_26_1_GIT_COMMIT_ID','26.1.0')
 export FABRIKT_RELEASE_26_1_DISTRO_VERSION := env_var_or_default('FABRIKT_RELEASE_26_1_DISTRO_VERSION','26.1.0')
@@ -67,7 +65,7 @@ export FABRIKT_RELEASE_26_1_DISTRO_VERSION := env_var_or_default('FABRIKT_RELEAS
 default:
   @echo "Invoke just --list to see a list of possible recipes to run"
 
-all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-spark build-widoco
+all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-spark build-widoco build-fabrikt
 
 
 # Ubuntu recipes
@@ -802,14 +800,15 @@ _build-fabrikt-main-V V:
                               --progress plain \
                               --build-arg PREFIX={{prefix}} \
                               --build-arg PARENT_TAG={{V}} \
-                              --build-arg FABRIKT_GIT_COMMIT_ID=${FABRIKT_MAIN_GIT_COMMIT_ID} \
-                              --build-arg FABRIKT_DISTRO_VERSION=${FABRIKT_MAIN_DISTRO_VERSION} \
+                              --build-arg FABRIKT_GIT_COMMIT_ID=${FABRIKT_GIT_COMMIT_ID} \
+                              --build-arg FABRIKT_DISTRO_VERSION=${FABRIKT_DISTRO_VERSION} \
                               .
    fi
    just _push_image "${IMGTAG}" {{post_push_sleep_seconds}}
 
 list-fabrikt-main-commit-id:
    git ls-remote https://github.com/fabrikt-io/fabrikt heads/master
+
 
 _push_image image_name post_push_wait_seconds:
    #!/usr/bin/env bash
