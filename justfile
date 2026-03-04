@@ -756,7 +756,7 @@ build-fabrikt: build-fabrikt-main-17 build-fabrikt-release-26_1
 build-fabrikt-main-17: build-zulu-17
    just _build-fabrikt-main-V 17
 
-build-fabrikt-release-26_1: build-maven-17
+build-fabrikt-release-26_1: build-zulu-17
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-fabrikt:${FABRIKT_RELEASE_26_1_DISTRO_VERSION}
    if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
