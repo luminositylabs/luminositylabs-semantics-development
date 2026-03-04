@@ -1,0 +1,46 @@
+ARG PREFIX=llsem-
+ARG PARENT_TAG=17
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} AS build
+
+# install updates and required packages, and cleanup afterward
+RUN DEBIAN_FRONTEND=noninteractive && \
+    apt-get update && \
+    apt-get -y upgrade && \
+    apt-get -y --no-install-recommends install git && \
+    rm -rf /var/lib/apt/lists/*
+
+# pin git commit hash along with the version specified in maven
+ARG FABRIKT_MAIN_GIT_COMMIT_ID=25d6b354
+ARG FABRIKT_MAIN_DISTRO_VERSION=26.1.0-1
+
+# establish locations for installation and source code
+ENV FABRIKT_HOME=/opt/fabrikt
+ENV FABRIKT_SRC_DIR=/usr/src/build/fabrikt
+
+# clone/checkout from revision control
+RUN mkdir -p ${FABRIKT_SRC_DIR} && \
+    cd ${FABRIKT_SRC_DIR} && \
+    git clone https://github.com/fabrikt-io/fabrikt
+
+# build/install software, then cleanup
+RUN cd ${FABRIKT_SRC_DIR} && \
+    cd fabrikt && \
+    git checkout ${FABRIKT_MAIN_GIT_COMMIT_ID} && \
+    ./gradlew clean build && \
+    mkdir -p ${FABRIKT_HOME} && \
+    cd ${FABRIKT_HOME}  && \
+    cp ${FABRIKT_SRC_DIR}/fabrikt/build/libs/fabrikt-*.jar ./fabrikt.jar && \
+    rm -Rf /usr/src/build ~/.m2
+
+#############################################################################
+FROM ${PREFIX}ubuntu-zulu:${PARENT_TAG} AS runtime
+
+### ARGs do not appear to span build stages so the same ARG needs to be defined here as well
+ARG FABRIKT_MAIN_DISTRO_VERSION=26.1.0-1
+
+ENV FABRIKT_HOME=/opt/fabrikt
+WORKDIR "${FABRIKT_HOME}"
+
+COPY --from=build ${FABRIKT_HOME}/fabrikt.jar ${FABRIKT_HOME}/fabrikt.jar
+
+CMD [ "sh", "-c", "java -jar ${FABRIKT_HOME}/fabrikt.jar" ]
