@@ -17,6 +17,7 @@ export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.30-zu
 export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.18-zulu')
 export JAVA_VER_DISTRO_21 := env_var_or_default('JAVA_VER_DISTRO_21','21.0.10-zulu')
 export JAVA_VER_DISTRO_25 := env_var_or_default('JAVA_VER_DISTRO_25','25.0.2-zulu')
+export JAVA_VER_DISTRO_26 := env_var_or_default('JAVA_VER_DISTRO_26','26-zulu')
 export JBANG_VER := env_var_or_default('JBANG_VER', '0.137.0')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','2.3.20')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.8.2')
@@ -95,7 +96,7 @@ list-dockerhub-ubuntu-tags:
 
 
 # OpenJDK Zulu recipes
-build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25
+build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25 build-zulu-26
 
 build-zulu-8: build-ubuntu
    just _build-zulu-V 8
@@ -111,6 +112,9 @@ build-zulu-21: build-ubuntu
 
 build-zulu-25: build-ubuntu
    just _build-zulu-V 25
+
+build-zulu-26: build-ubuntu
+   just _build-zulu-V 26
 
 _build-zulu-V V:
    #!/usr/bin/env bash
@@ -139,7 +143,7 @@ _build-zulu-V V:
 
 
 # Kotlin recipes
-build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-21 build-kotlin-25
+build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-21 build-kotlin-25 build-kotlin-26
 
 build-kotlin-8: build-zulu-8
    just _build-kotlin-V 8
@@ -155,6 +159,9 @@ build-kotlin-21: build-zulu-21
 
 build-kotlin-25: build-zulu-25
    just _build-kotlin-V 25
+
+build-kotlin-26: build-zulu-26
+   just _build-kotlin-V 26
 
 _build-kotlin-V V:
    #!/usr/bin/env bash
@@ -182,7 +189,7 @@ _build-kotlin-V V:
 
 
 # Scala recipes
-build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25
+build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25 build-scala-26
 
 build-scala-8: build-zulu-8
    just _build-scala-V 8
@@ -198,6 +205,9 @@ build-scala-21: build-zulu-21
 
 build-scala-25: build-zulu-25
    just _build-scala-V 25
+
+build-scala-26: build-zulu-26
+   just _build-scala-V 26
 
 _build-scala-V V:
    #!/usr/bin/env bash
@@ -225,7 +235,7 @@ _build-scala-V V:
 
 
 # Apache Ant recipes
-build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-21 build-ant-25
+build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-21 build-ant-25 build-ant-26
 
 build-ant-8: build-kotlin-8
    just _build-ant-V 8
@@ -241,6 +251,9 @@ build-ant-21: build-kotlin-21
 
 build-ant-25: build-kotlin-25
    just _build-ant-V 25
+
+build-ant-26: build-kotlin-26
+   just _build-ant-V 26
 
 _build-ant-V V:
    #!/usr/bin/env bash
@@ -268,7 +281,7 @@ _build-ant-V V:
 
 
 # Gradle recipes
-build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-21 build-gradle-25
+build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-21 build-gradle-25 build-gradle-26
 
 build-gradle-8: build-kotlin-8
    just _build-gradle-V 8
@@ -284,6 +297,9 @@ build-gradle-21: build-kotlin-21
 
 build-gradle-25: build-kotlin-25
    just _build-gradle-V 25
+
+build-gradle-26: build-kotlin-26
+   just _build-gradle-V 26
 
 _build-gradle-V V:
    #!/usr/bin/env bash
@@ -311,7 +327,7 @@ _build-gradle-V V:
 
 
 # Apache Maven recipes
-build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-21 build-maven-25
+build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-21 build-maven-25 build-maven-26
 
 build-maven-8: build-kotlin-8
    just _build-maven-V 8
@@ -327,6 +343,9 @@ build-maven-21: build-kotlin-21
 
 build-maven-25: build-kotlin-25
    just _build-maven-V 25
+
+build-maven-26: build-kotlin-26
+   just _build-maven-V 26
 
 _build-maven-V V:
    #!/usr/bin/env bash
@@ -354,7 +373,7 @@ _build-maven-V V:
 
 
 # SBT recipes
-build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25
+build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25 build-sbt-26
 
 build-sbt-8: build-scala-8
    just _build-sbt-V 8
@@ -370,6 +389,9 @@ build-sbt-21: build-scala-21
 
 build-sbt-25: build-scala-25
    just _build-sbt-V 25
+
+build-sbt-26: build-scala-26
+   just _build-sbt-V 26
 
 _build-sbt-V V:
    #!/usr/bin/env bash
