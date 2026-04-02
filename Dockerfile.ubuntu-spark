@@ -10,8 +10,8 @@ RUN DEBIAN_FRONTEND=noninteractive && \
     rm -rf /var/lib/apt/lists/*
 
 # pin git commit hash along with the version specified in maven
-ARG SPARK_GIT_COMMIT_ID=8915c607
-ARG SPARK_DISTRO_VERSION=4.1.0-SNAPSHOT
+ARG SPARK_GIT_COMMIT_ID=0af97225
+ARG SPARK_DISTRO_VERSION=4.2.0-SNAPSHOT
 
 # establish locations for installation and source code
 ENV SPARK_HOME=/opt/spark
@@ -27,7 +27,7 @@ RUN mkdir -p ${SPARK_SRC_DIR} && \
     cd ${SPARK_SRC_DIR} && \
     cd apache-spark && \
     git checkout ${SPARK_GIT_COMMIT_ID} && \
-    ./dev/make-distribution.sh --name custom-spark --pip --tgz -Psparkr -Phive -Phive-thriftserver -Pmesos -Pyarn -Pkubernetes && \
+    ./dev/make-distribution.sh --name custom-spark --pip --tgz -Psparkr -Phive -Phive-thriftserver -Pyarn -Pkubernetes && \
     mkdir -p ${SPARK_HOME} && \
     cd ${SPARK_HOME} && \
     tar --strip-components=1 -xvz -f ${SPARK_SRC_DIR}/apache-spark/spark-${SPARK_DISTRO_VERSION}-bin-custom-spark.tgz && \
