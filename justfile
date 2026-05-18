@@ -41,7 +41,7 @@ export CASSANDRA_RELEASE_4_1_JAVA_MAJOR_VERSION := env_var_or_default('CASSANDRA
 export CASSANDRA_RELEASE_4_1_PARENT_TAG := env_var_or_default('CASSANDRA_RELEASE_4_1_PARENT_TAG','11')
 export CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID := env_var_or_default('CASSANDRA_RELEASE_4_1_GIT_COMMIT_ID','cassandra-4.1.11')
 export CASSANDRA_RELEASE_4_1_DISTRO_VERSION := env_var_or_default('CASSANDRA_RELEASE_4_1_DISTRO_VERSION','4.1.11')
-export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','427fc327')
+export JENA_MAIN_GIT_COMMIT_ID := env_var_or_default('JENA_MAIN_GIT_COMMIT_ID','802b05ec')
 export JENA_MAIN_DISTRO_VERSION := env_var_or_default('JENA_MAIN_DISTRO_VERSION','6.2.0-SNAPSHOT')
 export JENA_RELEASE_6_1_PARENT_TAG := env_var_or_default('JENA_RELEASE_6_1_PARENT_TAG','21')
 export JENA_RELEASE_6_1_GIT_COMMIT_ID := env_var_or_default('JENA_RELEASE_6_1_GIT_COMMIT_ID','jena-6.1.0')
@@ -573,7 +573,13 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-21 build-jena-release-6_1 build-jena-release-5_5
+build-jena: build-jena-main-26 build-jena-main-25 build-jena-main-21 build-jena-release-6_1 build-jena-release-5_5
+
+build-jena-main-26: build-maven-26
+   just _build-jena-main-V 26
+
+build-jena-main-25: build-maven-25
+   just _build-jena-main-V 25
 
 build-jena-main-21: build-maven-21
    just _build-jena-main-V 21
