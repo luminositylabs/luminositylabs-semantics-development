@@ -122,6 +122,9 @@ build-zulu-25: build-ubuntu
 build-zulu-26: build-ubuntu
    just _build-zulu-V 26
 
+list-sdkman-zulu-versions:
+   just _list-sdkman-candidates java | grep zulu
+
 _build-zulu-V V:
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-zulu:{{V}}
@@ -169,6 +172,9 @@ build-kotlin-25: build-zulu-25
 build-kotlin-26: build-zulu-26
    just _build-kotlin-V 26
 
+list-sdkman-kotlin-versions:
+   just _list-sdkman-candidates kotlin
+
 _build-kotlin-V V:
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-kotlin:{{V}}
@@ -214,6 +220,9 @@ build-scala-25: build-zulu-25
 
 build-scala-26: build-zulu-26
    just _build-scala-V 26
+
+list-sdkman-scala-versions:
+   just _list-sdkman-candidates scala
 
 _build-scala-V V:
    #!/usr/bin/env bash
@@ -261,6 +270,9 @@ build-ant-25: build-kotlin-25
 build-ant-26: build-kotlin-26
    just _build-ant-V 26
 
+list-sdkman-ant-versions:
+   just _list-sdkman-candidates ant
+
 _build-ant-V V:
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-ant:{{V}}
@@ -306,6 +318,9 @@ build-gradle-25: build-kotlin-25
 
 build-gradle-26: build-kotlin-26
    just _build-gradle-V 26
+
+list-sdkman-gradle-versions:
+   just _list-sdkman-candidates gradle
 
 _build-gradle-V V:
    #!/usr/bin/env bash
@@ -353,6 +368,9 @@ build-maven-25: build-kotlin-25
 build-maven-26: build-kotlin-26
    just _build-maven-V 26
 
+list-sdkman-maven-versions:
+   just _list-sdkman-candidates maven
+
 _build-maven-V V:
    #!/usr/bin/env bash
    IMGTAG={{prefix}}ubuntu-maven:{{V}}
@@ -398,6 +416,9 @@ build-sbt-25: build-scala-25
 
 build-sbt-26: build-scala-26
    just _build-sbt-V 26
+
+list-sdkman-sbt-versions:
+   just _list-sdkman-candidates sbt
 
 _build-sbt-V V:
    #!/usr/bin/env bash
@@ -824,6 +845,11 @@ list-widoco-upstream-master-commit-id:
 list-widoco-upstream-master-pom-version:
    curl -Ls https://raw.githubusercontent.com/dgarijo/Widoco/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
+
+_list-sdkman-candidates C:
+   #!/usr/bin/env bash
+   source ${SDKMAN_DIR}/bin/sdkman-init.sh
+   sdk list {{C}} | cat
 
 _push_image image_name post_push_wait_seconds:
    #!/usr/bin/env bash
