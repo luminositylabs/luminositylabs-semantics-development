@@ -10,6 +10,7 @@ ENV LANG=en_US.UTF-8 \
 RUN DEBIAN_FRONTEND=noninteractive && \
     rm /bin/sh && ln -s /bin/bash /bin/sh && \
     apt-get update && \
+    apt-mark hold tar && \
     apt-get -y upgrade && \
     apt-get -y --no-install-recommends install locales software-properties-common && \
     locale-gen ${LC_ALL} && \
