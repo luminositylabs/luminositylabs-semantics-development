@@ -104,7 +104,7 @@ build-ubuntu:
    just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 list-dockerhub-ubuntu-tags:
-   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep noble
+   curl -Ls 'https://registry.hub.docker.com/v2/repositories/library/ubuntu/tags?page_size=1024'| jq '."results"[]["name"]' | grep resolute
 
 
 # OpenJDK Zulu recipes
