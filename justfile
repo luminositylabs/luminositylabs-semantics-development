@@ -871,6 +871,10 @@ list-widoco-upstream-master-pom-version:
    curl -Ls https://raw.githubusercontent.com/dgarijo/Widoco/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
 
 
+list-current-images:
+   docker image ls --format "{{{{.Repository}}:{{{{.Tag}}" | grep {{prefix}} | sort
+
+
 _list-sdkman-candidates C:
    #!/usr/bin/env bash
    source ${SDKMAN_DIR}/bin/sdkman-init.sh
