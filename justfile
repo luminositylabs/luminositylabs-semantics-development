@@ -21,6 +21,7 @@ export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.20+1.
 export JAVA_VER_DISTRO_21 := env_var_or_default('JAVA_VER_DISTRO_21','21.0.12+1.1-zulu')
 export JAVA_VER_DISTRO_25 := env_var_or_default('JAVA_VER_DISTRO_25','25.0.4+1.1-zulu')
 export JAVA_VER_DISTRO_26 := env_var_or_default('JAVA_VER_DISTRO_26','26.0.2+1.1-zulu')
+export JAVA_VER_DISTRO_27 := env_var_or_default('JAVA_VER_DISTRO_27','27.0.0+35-zulu')
 export JBANG_VER := env_var_or_default('JBANG_VER', '0.141.0')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','2.4.20')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.9.0')
@@ -108,7 +109,7 @@ list-dockerhub-ubuntu-tags:
 
 
 # OpenJDK Zulu recipes
-build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25 build-zulu-26
+build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25 build-zulu-26 build-zulu-27
 
 build-zulu-8: build-ubuntu
    just _build-zulu-V 8
@@ -127,6 +128,9 @@ build-zulu-25: build-ubuntu
 
 build-zulu-26: build-ubuntu
    just _build-zulu-V 26
+
+build-zulu-27: build-ubuntu
+   just _build-zulu-V 27
 
 list-sdkman-zulu-versions:
    just _list-sdkman-candidates java | grep zulu
