@@ -11,7 +11,7 @@ do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 use_cache := env_var_or_default('USE_CACHE', 'true')
 external_cache_dir_name := env_var_or_default('EXTERNAL_CACHE_DIR_NAME', 'external-cache')
 
-#export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260811.1') # ships w/ tar 1.35+dfsg-4ubuntu0.4
+#export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20261006') # ships w/ tar 1.35+dfsg-4ubuntu0.4
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260724.1') # ships w/ tar 1.35+dfsg-4ubuntu0.4
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260707')   # ships w/ tar 1.35+dfsg-4ubuntu0.2
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260627')    # ships w/ tar 1.35+dfsg-4ubuntu0.1
