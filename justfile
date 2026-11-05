@@ -22,14 +22,13 @@ external_cache_dir_name := env_var_or_default('EXTERNAL_CACHE_DIR_NAME', 'extern
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260724.1') # ships w/ tar 1.35+dfsg-4ubuntu0.4
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260707')   # ships w/ tar 1.35+dfsg-4ubuntu0.2
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260627')    # ships w/ tar 1.35+dfsg-4ubuntu0.1
-export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.504+1-zulu')
-export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.32+1.1-zulu')
-export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.20+1.1-zulu')
-export JAVA_VER_DISTRO_21 := env_var_or_default('JAVA_VER_DISTRO_21','21.0.12+1.1-zulu')
-export JAVA_VER_DISTRO_25 := env_var_or_default('JAVA_VER_DISTRO_25','25.0.4+1.1-zulu')
-export JAVA_VER_DISTRO_26 := env_var_or_default('JAVA_VER_DISTRO_26','26.0.2+1.1-zulu')
-export JAVA_VER_DISTRO_27 := env_var_or_default('JAVA_VER_DISTRO_27','27.0.0+35-zulu')
-export JBANG_VER := env_var_or_default('JBANG_VER', '0.142.0')
+export JAVA_VER_DISTRO_8 := env_var_or_default('JAVA_VER_DISTRO_8','8.0.512.0+8-zulu')
+export JAVA_VER_DISTRO_11 := env_var_or_default('JAVA_VER_DISTRO_11','11.0.33.0+9-zulu')
+export JAVA_VER_DISTRO_17 := env_var_or_default('JAVA_VER_DISTRO_17','17.0.21.0+9-zulu')
+export JAVA_VER_DISTRO_21 := env_var_or_default('JAVA_VER_DISTRO_21','21.0.13.0+9-zulu')
+export JAVA_VER_DISTRO_25 := env_var_or_default('JAVA_VER_DISTRO_25','25.0.5.0+8-zulu')
+export JAVA_VER_DISTRO_27 := env_var_or_default('JAVA_VER_DISTRO_27','27.0.1.0+9-zulu')
+export JBANG_VER := env_var_or_default('JBANG_VER', '0.143.0')
 export KOTLIN_VER := env_var_or_default('KOTLIN_VER','2.4.21')
 export SCALA_VER := env_var_or_default('SCALA_VER','3.10.0')
 export ANT_VER := env_var_or_default('ANT_VER','1.10.17')
@@ -116,7 +115,7 @@ list-dockerhub-ubuntu-tags:
 
 
 # OpenJDK Zulu recipes
-build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25 build-zulu-26 build-zulu-27
+build-zulu: build-zulu-8 build-zulu-11 build-zulu-17 build-zulu-21 build-zulu-25 build-zulu-27
 
 build-zulu-8: build-ubuntu
    just _build-zulu-V 8
@@ -132,9 +131,6 @@ build-zulu-21: build-ubuntu
 
 build-zulu-25: build-ubuntu
    just _build-zulu-V 25
-
-build-zulu-26: build-ubuntu
-   just _build-zulu-V 26
 
 build-zulu-27: build-ubuntu
    just _build-zulu-V 27
@@ -169,7 +165,7 @@ _build-zulu-V V:
 
 
 # Kotlin recipes
-build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-21 build-kotlin-25 build-kotlin-26
+build-kotlin: build-kotlin-8 build-kotlin-11 build-kotlin-17 build-kotlin-21 build-kotlin-25
 
 build-kotlin-8: build-zulu-8
    just _build-kotlin-V 8
@@ -185,9 +181,6 @@ build-kotlin-21: build-zulu-21
 
 build-kotlin-25: build-zulu-25
    just _build-kotlin-V 25
-
-build-kotlin-26: build-zulu-26
-   just _build-kotlin-V 26
 
 list-sdkman-kotlin-versions:
    just _list-sdkman-candidates kotlin
@@ -218,7 +211,7 @@ _build-kotlin-V V:
 
 
 # Scala recipes
-build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25 build-scala-26
+build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25
 
 build-scala-8: build-zulu-8
    just _build-scala-V 8
@@ -234,9 +227,6 @@ build-scala-21: build-zulu-21
 
 build-scala-25: build-zulu-25
    just _build-scala-V 25
-
-build-scala-26: build-zulu-26
-   just _build-scala-V 26
 
 list-sdkman-scala-versions:
    just _list-sdkman-candidates scala
@@ -267,7 +257,7 @@ _build-scala-V V:
 
 
 # Apache Ant recipes
-build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-21 build-ant-25 build-ant-26
+build-ant: build-ant-8 build-ant-11 build-ant-17 build-ant-21 build-ant-25
 
 build-ant-8: build-kotlin-8
    just _build-ant-V 8
@@ -283,9 +273,6 @@ build-ant-21: build-kotlin-21
 
 build-ant-25: build-kotlin-25
    just _build-ant-V 25
-
-build-ant-26: build-kotlin-26
-   just _build-ant-V 26
 
 list-sdkman-ant-versions:
    just _list-sdkman-candidates ant
@@ -316,7 +303,7 @@ _build-ant-V V:
 
 
 # Gradle recipes
-build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-21 build-gradle-25 build-gradle-26
+build-gradle: build-gradle-8 build-gradle-11 build-gradle-17 build-gradle-21 build-gradle-25
 
 build-gradle-8: build-kotlin-8
    just _build-gradle-V 8
@@ -332,9 +319,6 @@ build-gradle-21: build-kotlin-21
 
 build-gradle-25: build-kotlin-25
    just _build-gradle-V 25
-
-build-gradle-26: build-kotlin-26
-   just _build-gradle-V 26
 
 list-sdkman-gradle-versions:
    just _list-sdkman-candidates gradle
@@ -365,7 +349,7 @@ _build-gradle-V V:
 
 
 # Apache Maven recipes
-build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-21 build-maven-25 build-maven-26
+build-maven: build-maven-8 build-maven-11 build-maven-17 build-maven-21 build-maven-25
 
 build-maven-8: build-kotlin-8
    just _build-maven-V 8
@@ -382,8 +366,6 @@ build-maven-21: build-kotlin-21
 build-maven-25: build-kotlin-25
    just _build-maven-V 25
 
-build-maven-26: build-kotlin-26
-   just _build-maven-V 26
 
 list-sdkman-maven-versions:
    just _list-sdkman-candidates maven
@@ -414,7 +396,7 @@ _build-maven-V V:
 
 
 # SBT recipes
-build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25 build-sbt-26
+build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25
 
 build-sbt-8: build-scala-8
    just _build-sbt-V 8
@@ -430,9 +412,6 @@ build-sbt-21: build-scala-21
 
 build-sbt-25: build-scala-25
    just _build-sbt-V 25
-
-build-sbt-26: build-scala-26
-   just _build-sbt-V 26
 
 list-sdkman-sbt-versions:
    just _list-sdkman-candidates sbt
@@ -611,10 +590,7 @@ list-cassandra-upstream-main-build-version:
 
 
 # Apache Jena recipes
-build-jena: build-jena-main-26 build-jena-main-25 build-jena-main-21 build-jena-release-6_2 build-jena-release-6_1 build-jena-release-5_5
-
-build-jena-main-26: build-maven-26
-   just _build-jena-main-V 26
+build-jena: build-jena-main-25 build-jena-main-21 build-jena-release-6_2 build-jena-release-6_1 build-jena-release-5_5
 
 build-jena-main-25: build-maven-25
    just _build-jena-main-V 25
