@@ -11,7 +11,14 @@ do_platform_arm64 := env_var_or_default('PLATFORM_ARM64', 'true')
 use_cache := env_var_or_default('USE_CACHE', 'true')
 external_cache_dir_name := env_var_or_default('EXTERNAL_CACHE_DIR_NAME', 'external-cache')
 
-#export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20261006') # ships w/ tar 1.35+dfsg-4ubuntu0.4
+# latest ubuntu tags can be found at https://hub.docker.com/_/ubuntu
+# as of 2026-11-05, ubuntu 26.0.4 (resolute) is the latest LTS release.
+# resolute-20261024.1 is the latest resolute tag.  it has tar package version 1.35+dfsg-4ubuntu0.4
+# resolute-20260627.1 has tar package version 1.35+dfsg-4ubuntu0.1
+# the latest tar does not work w/ rosetta, so we ping tar to version 1.35+dfsg-4ubuntu0.1
+# see: https://github.com/orbstack/orbstack/issues/2588
+
+#export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20261024.1') # ships w/ tar 1.35+dfsg-4ubuntu0.4
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260724.1') # ships w/ tar 1.35+dfsg-4ubuntu0.4
 #export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260707')   # ships w/ tar 1.35+dfsg-4ubuntu0.2
 export UBUNTU_TAG := env_var_or_default('UBUNTU_TAG','resolute-20260627')    # ships w/ tar 1.35+dfsg-4ubuntu0.1
