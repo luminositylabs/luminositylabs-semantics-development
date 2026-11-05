@@ -211,7 +211,7 @@ _build-kotlin-V V:
 
 
 # Scala recipes
-build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25
+build-scala: build-scala-8 build-scala-11 build-scala-17 build-scala-21 build-scala-25 build-scala-27
 
 build-scala-8: build-zulu-8
    just _build-scala-V 8
@@ -227,6 +227,9 @@ build-scala-21: build-zulu-21
 
 build-scala-25: build-zulu-25
    just _build-scala-V 25
+
+build-scala-27: build-zulu-27
+   just _build-scala-V 27
 
 list-sdkman-scala-versions:
    just _list-sdkman-candidates scala
