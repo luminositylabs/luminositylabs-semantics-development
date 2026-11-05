@@ -34,7 +34,7 @@ export SCALA_VER := env_var_or_default('SCALA_VER','3.10.0')
 export ANT_VER := env_var_or_default('ANT_VER','1.10.17')
 export GRADLE_VER := env_var_or_default('GRADLE_VER','9.7.1')
 export MAVEN_VER := env_var_or_default('MAVEN_VER','3.9.16')
-export SBT_VER := env_var_or_default('SBT_VER','2.0.10')
+export SBT_VER := env_var_or_default('SBT_VER','2.0.12')
 export BLAZEGRAPH_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_GIT_COMMIT_ID','829ce824')
 export BLAZEGRAPH_DISTRO_VERSION := env_var_or_default('BLAZEGRAPH_DISTRO_VERSION','2.1.6-SNAPSHOT')
 export BLAZEGRAPH_RELEASE_GIT_COMMIT_ID := env_var_or_default('BLAZEGRAPH_RELEASE_GIT_COMMIT_ID','BLAZEGRAPH_RELEASE_2_1_5')
@@ -399,7 +399,7 @@ _build-maven-V V:
 
 
 # SBT recipes
-build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25
+build-sbt: build-sbt-8 build-sbt-11 build-sbt-17 build-sbt-21 build-sbt-25 build-sbt-27
 
 build-sbt-8: build-scala-8
    just _build-sbt-V 8
@@ -415,6 +415,9 @@ build-sbt-21: build-scala-21
 
 build-sbt-25: build-scala-25
    just _build-sbt-V 25
+
+build-sbt-27: build-scala-27
+   just _build-sbt-V 27
 
 list-sdkman-sbt-versions:
    just _list-sdkman-candidates sbt
