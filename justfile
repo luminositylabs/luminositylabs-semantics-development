@@ -75,12 +75,13 @@ export SPARK_RELEASE_3_5_GIT_COMMIT_ID := env_var_or_default('SPARK_RELEASE_3_5_
 export SPARK_RELEASE_3_5_DISTRO_VERSION := env_var_or_default('SPARK_RELEASE_3_5_DISTRO_VERSION','3.5.8')
 export WIDOCO_MAIN_GIT_COMMIT_ID := env_var_or_default('WIDOCO_MAIN_GIT_COMMIT_ID','2da2671b')
 export WIDOCO_MAIN_DISTRO_VERSION := env_var_or_default('WIDOCO_MAIN_DISTRO_VERSION','1.4.26')
+export OLLAMA_VER := env_var_or_default('OLLAMA_VER','0.40.14')
 
 
 default:
   @echo "Invoke just --list to see a list of possible recipes to run"
 
-all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-spark build-widoco
+all: build-ubuntu build-zulu build-kotlin build-scala build-ant build-gradle build-maven build-sbt build-blazegraph build-cassandra build-jena build-spark build-widoco build-ollama
 
 
 # Ubuntu recipes
@@ -862,6 +863,32 @@ list-widoco-upstream-master-commit-id:
 
 list-widoco-upstream-master-pom-version:
    curl -Ls https://raw.githubusercontent.com/dgarijo/Widoco/master/pom.xml | sed -e 's/xmlns="[^"]*"//g' | xmllint --xpath '/project/version/text()' -
+
+
+# Ollama recipes
+build-ollama: build-ubuntu
+   #!/usr/bin/env bash
+   IMGTAG={{prefix}}ubuntu-ollama:latest
+   if [[ "{{do_platform_amd64}}" == "true" ]]; then _PLATFORMS+=("linux/amd64"); fi
+   if [[ "{{do_platform_arm64}}" == "true" ]]; then _PLATFORMS+=("linux/arm64"); fi
+   if [[ "{{use_cache}}" == "true" ]]; then
+      CACHE=" --cache-from type=local,src=$(pwd)/{{external_cache_dir_name}}/ollama/ollama --cache-to type=local,dest=$(pwd)/{{external_cache_dir_name}}/ollama/ollama "
+   fi
+   for I in ${!_PLATFORMS[@]}; do
+      if [[ ${I} -gt 0 ]]; then PLATFORMS="${PLATFORMS},"; fi
+      PLATFORMS="${PLATFORMS}${_PLATFORMS[$I]}"
+   done
+   if [[ "${PLATFORMS}" != "" ]]; then
+      time docker build -f Dockerfile.ubuntu-ollama -t ${IMGTAG} \
+                        --platform "${PLATFORMS}" \
+                        ${CACHE} \
+                        --progress plain \
+                        --build-arg PREFIX={{prefix}} \
+                        --build-arg PARENT_TAG=latest \
+                        --build-arg OLLAMA_VER=${OLLAMA_VER} \
+                        .
+   fi
+   just _push_image ${IMGTAG} {{post_push_sleep_seconds}}
 
 
 list-current-images:

@@ -21,6 +21,7 @@ A collection of Dockerfiles for customized builds of
 - [Apache Jena](https://jena.apache.org/)
 - [Apache Spark](https://spark.apache.org/)
 - [Widoco](https://github.com/dgarijo/Widoco/)
+- [Ollama](https://github.com/ollama/ollama/)
 
 ## Getting started
 
@@ -63,6 +64,7 @@ graph BT
     ubuntu_cassandra["Ubuntu‑Cassandra"]
     ubuntu_jena["Ubuntu‑Jena"]
     ubuntu_spark["Ubuntu‑Spark"]
+    ubuntu_ollama["Ubuntu‑Ollama"]
 
     %% Widoco depends on Maven and Zulu runtimes
     ubuntu_widoco["Ubuntu‑Widoco"]
@@ -75,6 +77,7 @@ graph BT
     ubuntu_jena --> ubuntu_maven
     ubuntu_kotlin --> ubuntu_zulu
     ubuntu_maven --> ubuntu_kotlin
+    ubuntu_ollama --> ubuntu
     ubuntu_sbt --> ubuntu_scala
     ubuntu_scala --> ubuntu_zulu 
     ubuntu_spark --> ubuntu_maven
